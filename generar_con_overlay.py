@@ -38,7 +38,7 @@ def crear_overlay_datos(datos_titular, num_pasajeros, acompanantes=[], todas_hab
     # ===== DATOS PERSONALES =====
     # Apellido y nombre
     y_nombre = height - 57 * mm
-    c.drawString(80 * mm, y_nombre, datos_titular['Apellido y nombre'])
+    c.drawString(70 * mm, y_nombre, datos_titular['Apellido y nombre'])
     
     # Documento tipo y número
     y_doc = height - 65 * mm
@@ -57,7 +57,7 @@ def crear_overlay_datos(datos_titular, num_pasajeros, acompanantes=[], todas_hab
     
     # Seccional
     y_seccional = height - 95 * mm
-    c.drawString(80 * mm, y_seccional, datos_titular['Sede'])
+    c.drawString(45 * mm, y_seccional, datos_titular['Sede'])
     
     # Fecha de nacimiento
     y_fechanac = height - 65 * mm
@@ -87,10 +87,10 @@ def crear_overlay_datos(datos_titular, num_pasajeros, acompanantes=[], todas_hab
     if todas_habitaciones and len(todas_habitaciones) > 1:
         # Ordenar habitaciones y formatear
         habitaciones_texto = ", ".join(sorted(set(todas_habitaciones)))
-        c.drawString(105 * mm, y_habitacion, habitaciones_texto)
+        c.drawString(110 * mm, y_habitacion, habitaciones_texto)
     else:
         # Solo una habitación
-        c.drawString(105 * mm, y_habitacion, datos_titular['Nro. habitación'])
+        c.drawString(110 * mm, y_habitacion, datos_titular['Nro. habitación'])
     
     # Fecha de ingreso
     y_ingreso = height - 173 * mm
@@ -105,11 +105,11 @@ def crear_overlay_datos(datos_titular, num_pasajeros, acompanantes=[], todas_hab
     y_servicios = height - 198 * mm
     
     if 'DESAYUNO' in servicios and 'MEDIA' not in servicios:
-        c.drawString(50 * mm, y_servicios, "X")  # Desayuno
+        c.drawString(75 * mm, y_servicios, "X")  # Desayuno
     elif 'MEDIA' in servicios:
-        c.drawString(80 * mm, y_servicios, "X")  # Media pensión
+        c.drawString(110 * mm, y_servicios, "X")  # Media pensión
     elif 'COMPLETA' in servicios or 'PENSION' in servicios:
-        c.drawString(98 * mm, y_servicios, "X")  # Pensión completa
+        c.drawString(140 * mm, y_servicios, "X")  # Pensión completa
     
     # Número de voucher
     y_voucher = height - 40 * mm

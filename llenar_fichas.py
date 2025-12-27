@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 # Configuración
-CSV_DATOS = 'ingresos26_12.csv'
+CSV_DATOS = 'consultaRegimenReport.csv'
 
 
 def agrupar_por_voucher(csv_path):
