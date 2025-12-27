@@ -31,11 +31,11 @@ Este archivo contiene las reservas del día: nombre, documento, fechas, nacional
 
 2. **Plantilla PDF**
 
-El proyecto incluye una plantilla:
+El proyecto utiliza la plantilla oficial del hotel:
 
 ´´´Code  
-plantilla\_formulario.pdf  
-Esta plantilla fue adaptada para contener campos editables que coinciden con los nombres de las columnas del CSV.
+fichaPax.pdf  
+Esta es la ficha original en formato PDF del Hotel 23 de Mayo.
 
 3. **Script de Python**
 
@@ -46,47 +46,84 @@ El script:
 
 realiza las siguientes tareas:
 
-*  Lee el CSV.
+*  Lee el CSV y agrupa los registros por número de **voucher**.
 
-*  Mapea cada columna del CSV a un campo del PDF.
+*  De cada grupo de pasajeros con el mismo voucher, **selecciona al titular** (persona de mayor edad).
 
-* Genera un archivo FDF temporal.
+*  Extrae los **acompañantes** (hasta 3) con nombre y DNI.
 
-* Completa la plantilla PDF con los datos del pasajero.
+*  Identifica todas las **habitaciones** que ocupa el grupo familiar.
 
-* Exporta una ficha por cada ingreso del día.
+*  Mapea solo los campos necesarios del CSV a posiciones específicas del PDF.
+
+*  Los campos vacíos o con "No informado" se dejan en **blanco** para completar a mano.
+
+* Sobrepone los datos sobre el PDF original sin modificar su diseño.
+
+* Exporta **una ficha por voucher** (no por pasajero individual).
 
 4.  **Salida**
 
-El resultado es un conjunto de PDFs individuales, uno por pasajero, listos para imprimir o archivar digitalmente.
+El resultado es un conjunto de PDFs individuales en la carpeta `fichas/`, uno por cada **número de voucher**, con los datos del titular y acompañantes, listos para imprimir, firmar o completar en recepción.
 
 ## 🔧 Tecnologías utilizadas
 
 * Python 3
-
-* csv para lectura de datos
-
-*  pdftk o librerías equivalentes para completar PDFs
-
-*  FDF como formato intermedio para rellenar campos
-
-## 
+* **csv** para lectura de datos
+* **reportlab** para generar overlays de texto sobre PDFs
+* **pypdf** para manipular y combinar PDFs
+* Sistema de agrupación por voucher y selección automática de titular
 
 ## 📁 Estructura del repositorio
 
 fichaPax/  
 │  
 ├── ingresos26\_12.csv          \# Datos de ejemplo exportados del sistema hotelero  
-├── plantilla\_formulario.pdf   \# Plantilla PDF con campos editables  
-├── fichaPax.pdf               \# Ejemplo de ficha generada  
-├── temp.fdf                   \# Archivo temporal usado para completar PDFs  
-├── llenar\_fichas.py           \# Script principal  
+├── fichaPax.pdf               \# Plantilla PDF oficial del Hotel 23 de Mayo  
+├── llenar\_fichas.py           \# Script principal para generar fichas  
+├── generar\_con\_overlay.py     \# Función que sobrepone datos al PDF  
+├── previsualizar\_fichas.py    \# Script para previsualizar datos antes de generar  
+├── fichas/                    \# Carpeta donde se guardan las fichas generadas  
 └── README.md                  \# Este archivo
 
-## 🚀 Próximos pasos
+## 🚀 Uso
 
-* Mejorar la detección de campos faltantes.  
-* Generar logs diarios de fichas creadas.  
-* Integrar un CLI simple para seleccionar fechas o archivos.  
-* Exportar todas las fichas a una carpeta con fecha automática.  
+### Instalación de dependencias
+
+```bash
+pip install reportlab pypdf
+```
+
+### Generar fichas
+
+```bash
+python3 llenar_fichas.py
+```
+
+Las fichas se generarán en la carpeta `fichas/` con el formato:  
+`ficha_voucher_XXXXXXXX.pdf`
+
+### Previsualizar datos (opcional)
+
+Para ver qué datos se van a rellenar antes de generar los PDFs:
+
+```bash
+python3 previsualizar_fichas.py
+```
+
+## ✨ Características principales
+
+* ✅ **Una ficha por voucher** - Agrupa automáticamente por número de reserva
+* ✅ **Titular automático** - Selecciona la persona de mayor edad del grupo
+* ✅ **Acompañantes** - Incluye hasta 3 acompañantes con nombre y DNI
+* ✅ **Múltiples habitaciones** - Si el grupo ocupa varias habitaciones, las muestra todas
+* ✅ **Campos inteligentes** - Deja en blanco campos sin información para completar a mano
+* ✅ **Diseño original** - Preserva el formato oficial del Hotel 23 de Mayo
+
+## 🚀 Próximos pasos (ideas futuras)
+
+* Generar logs diarios de fichas creadas con timestamp.
+* Integrar un CLI interactivo para seleccionar fechas específicas.
+* Exportar automáticamente a una carpeta con fecha del día.
+* Enviar fichas por email a los huéspedes antes del check-in.  
   
